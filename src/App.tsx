@@ -1,0 +1,42 @@
+import React from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GamificationProvider } from "./context/GamificationContext";
+import Welcome from "./pages/Welcome";
+import MobileEntry from "./pages/MobileEntry";
+import OTPVerification from "./pages/OTPVerification";
+import PersonalDetails from "./pages/PersonalDetails";
+import AddressDetails from "./pages/AddressDetails";
+import AccountSelection from "./pages/AccountSelection";
+import Consent from "./pages/Consent";
+import VideoKYC from "./pages/VideoKYC";
+import KYCStatus from "./pages/KYCStatus";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <GamificationProvider>
+      <TooltipProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/mobile-entry" element={<MobileEntry />} />
+            <Route path="/otp-verification" element={<OTPVerification />} />
+            <Route path="/personal-details" element={<PersonalDetails />} />
+            <Route path="/address-details" element={<AddressDetails />} />
+            <Route path="/account-selection" element={<AccountSelection />} />
+            <Route path="/consent" element={<Consent />} />
+            <Route path="/video-kyc" element={<VideoKYC />} />
+            <Route path="/kyc-status" element={<KYCStatus />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </GamificationProvider>
+  </QueryClientProvider>
+);
+
+export default App;
