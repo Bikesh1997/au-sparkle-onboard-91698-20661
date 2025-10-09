@@ -90,7 +90,7 @@ const OTPVerification = () => {
                     key={index}
                     index={index} 
                     className={cn(
-                      "w-12 h-12 text-lg transition-colors border-2",
+                      "ml-1 w-12 h-12 text-lg transition-colors border-2",
                       verified && "border-success bg-success/10",
                       !verified && otp[index] && "border-primary"
                     )}
