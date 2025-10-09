@@ -14,11 +14,11 @@ const Welcome = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Fixed Top Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 bg-background border-b border-border p-4 z-10">
+      {/* <div className="fixed top-0 left-0 right-0 bg-background border-b border-border p-4 z-10">
         <div className="w-full max-w-md mx-auto pl-12">
           <ProgressBar value={0} />
         </div>
-      </div>
+      </div> */}
 
       {/* Header */}
       <div className="flex-shrink-0 text-center pt-20 pb-6 px-6">

@@ -69,8 +69,8 @@ const MobileEntry = () => {
                 className={cn(
                   "h-12 text-center text-lg pr-10 border-2",
                   error && "border-destructive",
-                  mobile.length === 10 && !error && "border-success",
-                  mobile.length > 0 && mobile.length < 10 && !error && "border-primary"
+                  // mobile.length === 10 && !error && "border-success",
+                  // mobile.length > 0 && mobile.length < 10 && !error && "border-primary"
                 )}
               />
               {mobile.length === 10 && !error && (
