@@ -77,7 +77,7 @@ const OTPVerification = () => {
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto px-6 pb-8">
         <div className="w-full max-w-md mx-auto space-y-5">
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-3">
             <InputOTP 
               maxLength={6} 
               value={otp} 
