@@ -56,7 +56,7 @@ const MobileEntry = () => {
       <div className="flex-1 overflow-y-auto px-6 pb-32">
         <div className="w-full max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="relative">
+            <div className="relative mt-3">
               <Input
                 type="tel"
                 placeholder="Enter 10-digit mobile number"
