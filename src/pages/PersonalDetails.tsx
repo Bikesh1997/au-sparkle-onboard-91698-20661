@@ -15,9 +15,14 @@ import { CalendarIcon } from "lucide-react";
 
 const PersonalDetails = () => {
   const [name, setName] = useState(() => localStorage.getItem("personalDetails_name") || "");
-  const [dob, setDob] = useState<Date | undefined>(() => {
+  const [dob, setDob] = useState<Date>(() => {
     const saved = localStorage.getItem("personalDetails_dob");
-    return saved ? new Date(saved) : undefined;
+    if (saved) return new Date(saved);
+  
+    // Default date: 18 years ago from today
+    const today = new Date();
+    const defaultDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    return defaultDob;
   });
   const [gender, setGender] = useState(() => localStorage.getItem("personalDetails_gender") || "");
   const [validName, setValidName] = useState(() => {
