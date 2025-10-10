@@ -45,91 +45,66 @@ const KYCStatus = () => {
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto px-6 pb-32">
-        <div className="w-full max-w-md mx-auto space-y-3">
+        <div className="w-full max-w-md mx-auto space-y-4">
           {/* Complete Profile Section - First */}
-          <div className="bg-gradient-to-br from-purple/5 to-transparent rounded-xl p-4 border border-purple/20">
-            <div className="mb-3">
-              <Badge className="bg-warning/10 text-warning border-warning/20 text-xs mb-2">
+          <div className="bg-gradient-to-br from-purple/10 to-transparent rounded-2xl p-6 border-2 border-purple/30 shadow-lg">
+            <div className="mb-4">
+              <Badge className="bg-warning text-warning-foreground text-xs mb-3">
                 Action Required
               </Badge>
-              <h3 className="text-base font-bold text-foreground mb-1">
+              <h3 className="text-lg font-bold text-foreground mb-2">
                 Complete Your Profile
               </h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Add details to unlock all features
               </p>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div
-                className="flex items-center justify-between p-3 bg-background rounded-lg border border-border hover:border-purple/40 transition-all cursor-pointer group"
+                className="flex items-center justify-between p-4 bg-background rounded-xl border-2 border-purple/20 hover:border-purple hover:shadow-md transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-purple/10 flex items-center justify-center group-hover:bg-purple/20 transition-colors">
-                    <UserPlus className="w-5 h-5 text-purple" />
+                  <div className="w-12 h-12 rounded-full bg-purple/20 flex items-center justify-center group-hover:bg-purple/30 transition-colors">
+                    <UserPlus className="w-6 h-6 text-purple" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">Add Nominee</p>
+                    <p className="text-base font-bold text-foreground">Add Nominee</p>
                     <p className="text-xs text-muted-foreground">Required for account</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs border-warning/30 text-warning bg-warning/5">
+                  <Badge variant="outline" className="text-xs border-warning text-warning bg-warning/10">
                     Pending
                   </Badge>
-                  <ArrowRight className="w-4 h-4 text-purple group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 text-purple group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
               <div
-                className="flex items-center justify-between p-3 bg-background rounded-lg border border-border hover:border-purple/40 transition-all cursor-pointer group"
+                className="flex items-center justify-between p-4 bg-background rounded-xl border-2 border-purple/20 hover:border-purple hover:shadow-md transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-purple/10 flex items-center justify-center group-hover:bg-purple/20 transition-colors">
-                    <Building2 className="w-5 h-5 text-purple" />
+                  <div className="w-12 h-12 rounded-full bg-purple/20 flex items-center justify-center group-hover:bg-purple/30 transition-colors">
+                    <Building2 className="w-6 h-6 text-purple" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">Banking Preferences</p>
+                    <p className="text-base font-bold text-foreground">Banking Preferences</p>
                     <p className="text-xs text-muted-foreground">Set up your preferences</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs border-warning/30 text-warning bg-warning/5">
+                  <Badge variant="outline" className="text-xs border-warning text-warning bg-warning/10">
                     Pending
                   </Badge>
-                  <ArrowRight className="w-4 h-4 text-purple group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 text-purple group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Verification Status */}
-          <div className="bg-success/5 rounded-xl p-4 border border-success/20">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-bold text-foreground">Verification Status</h3>
-              <Badge className="bg-success text-success-foreground text-xs">
-                Complete
-              </Badge>
-            </div>
-            
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-success rounded-full" />
-                <span className="text-foreground text-xs">Identity verified</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-success rounded-full" />
-                <span className="text-foreground text-xs">Documents approved</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-success rounded-full" />
-                <span className="text-foreground text-xs">Video KYC completed</span>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-center text-xs text-muted-foreground px-2">
-            Welcome to the AU Finance family!
+          <p className="text-center text-sm text-muted-foreground px-2 pt-2">
+            Welcome to the AU Finance family! 🎉
           </p>
         </div>
       </div>
@@ -137,12 +112,10 @@ const KYCStatus = () => {
       {/* Fixed Bottom CTA */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4">
         <div className="w-full max-w-md mx-auto">
-          <Button 
-            onClick={() => navigate("/")}
-            className="w-full h-12 text-base font-semibold"
-          >
-            Start Banking
-          </Button>
+          <div className="bg-success/10 border border-success/30 rounded-xl p-3 flex items-center gap-2 justify-center">
+            <CheckCircle2 className="w-5 h-5 text-success" />
+            <span className="text-sm font-semibold text-success">Account Setup Complete</span>
+          </div>
         </div>
       </div>
     </div>

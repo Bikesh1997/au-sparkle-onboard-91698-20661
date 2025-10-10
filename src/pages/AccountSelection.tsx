@@ -36,12 +36,13 @@ const accounts = [
 ];
 
 const AccountSelection = () => {
-  const [selectedAccount, setSelectedAccount] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState(() => localStorage.getItem("accountSelection") || "");
   const navigate = useNavigate();
   const { addPoints, setProgress, triggerConfetti } = useGamification();
 
   const handleSelect = (accountId: string) => {
     setSelectedAccount(accountId);
+    localStorage.setItem("accountSelection", accountId);
   };
 
   const [saved, setSaved] = useState(false);

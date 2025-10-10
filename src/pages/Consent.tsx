@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -62,6 +63,11 @@ const Consent = () => {
             )}
           >
             <div className="flex items-start gap-3">
+              <Checkbox 
+                checked={termsAccepted}
+                onCheckedChange={(checked) => setTermsAccepted(!!checked)}
+                className="mt-1 data-[state=checked]:bg-purple data-[state=checked]:border-purple"
+              />
               <div
                 className={cn(
                   "w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-all",
@@ -70,11 +76,7 @@ const Consent = () => {
                     : "bg-purple/10 text-purple"
                 )}
               >
-                {termsAccepted ? (
-                  <Check className="w-6 h-6 animate-bounce-in" />
-                ) : (
-                  <FileText className="w-6 h-6" />
-                )}
+                <FileText className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground mb-1 text-base">Terms & Conditions</h3>
@@ -96,6 +98,11 @@ const Consent = () => {
             )}
           >
             <div className="flex items-start gap-3">
+              <Checkbox 
+                checked={dataConsent}
+                onCheckedChange={(checked) => setDataConsent(!!checked)}
+                className="mt-1 data-[state=checked]:bg-purple data-[state=checked]:border-purple"
+              />
               <div
                 className={cn(
                   "w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-all",
@@ -104,11 +111,7 @@ const Consent = () => {
                     : "bg-purple/10 text-purple"
                 )}
               >
-                {dataConsent ? (
-                  <Check className="w-6 h-6 animate-bounce-in" />
-                ) : (
-                  <Lock className="w-6 h-6" />
-                )}
+                <Lock className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground mb-1 text-base">Data Consent</h3>

@@ -8,6 +8,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { BackButton } from "@/components/BackButton";
 import { useGamification } from "@/context/GamificationContext";
 import { MapPin, Navigation, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const pincodeData: Record<string, { city: string; state: string; lat: number; lng: number }> = {
   "400001": { city: "Mumbai", state: "Maharashtra", lat: 18.9388, lng: 72.8354 },
@@ -18,10 +19,10 @@ const pincodeData: Record<string, { city: string; state: string; lat: number; ln
 };
 
 const AddressDetails = () => {
-  const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [address, setAddress] = useState(() => localStorage.getItem("addressDetails_address") || "");
+  const [pincode, setPincode] = useState(() => localStorage.getItem("addressDetails_pincode") || "");
+  const [city, setCity] = useState(() => localStorage.getItem("addressDetails_city") || "");
+  const [state, setState] = useState(() => localStorage.getItem("addressDetails_state") || "");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [geoLocating, setGeoLocating] = useState(false);
   const [locationDetected, setLocationDetected] = useState(false);
@@ -29,10 +30,16 @@ const AddressDetails = () => {
   const navigate = useNavigate();
   const { addPoints, setProgress, triggerConfetti } = useGamification();
 
+  const handleAddressChange = (value: string) => {
+    setAddress(value);
+    localStorage.setItem("addressDetails_address", value);
+  };
+
   const handlePincodeChange = (value: string) => {
     const pin = value.replace(/\D/g, "").slice(0, 6);
     setPincode(pin);
     setLocationDetected(false);
+    localStorage.setItem("addressDetails_pincode", pin);
     
     if (pin.length > 0) {
       const matches = Object.keys(pincodeData).filter(p => p.startsWith(pin));
@@ -42,8 +49,12 @@ const AddressDetails = () => {
     }
     
     if (pin.length === 6 && pincodeData[pin]) {
-      setCity(pincodeData[pin].city);
-      setState(pincodeData[pin].state);
+      const cityValue = pincodeData[pin].city;
+      const stateValue = pincodeData[pin].state;
+      setCity(cityValue);
+      setState(stateValue);
+      localStorage.setItem("addressDetails_city", cityValue);
+      localStorage.setItem("addressDetails_state", stateValue);
       setSuggestions([]);
       setLocationDetected(true);
     } else if (pin.length === 6) {
@@ -57,8 +68,13 @@ const AddressDetails = () => {
     setTimeout(() => {
       const mockPin = "400001";
       setPincode(mockPin);
-      setCity(pincodeData[mockPin].city);
-      setState(pincodeData[mockPin].state);
+      const cityValue = pincodeData[mockPin].city;
+      const stateValue = pincodeData[mockPin].state;
+      setCity(cityValue);
+      setState(stateValue);
+      localStorage.setItem("addressDetails_pincode", mockPin);
+      localStorage.setItem("addressDetails_city", cityValue);
+      localStorage.setItem("addressDetails_state", stateValue);
       setLocationDetected(true);
       setGeoLocating(false);
     }, 1500);
@@ -66,10 +82,25 @@ const AddressDetails = () => {
 
   const handleSelectPincode = (pin: string) => {
     setPincode(pin);
-    setCity(pincodeData[pin].city);
-    setState(pincodeData[pin].state);
+    const cityValue = pincodeData[pin].city;
+    const stateValue = pincodeData[pin].state;
+    setCity(cityValue);
+    setState(stateValue);
+    localStorage.setItem("addressDetails_pincode", pin);
+    localStorage.setItem("addressDetails_city", cityValue);
+    localStorage.setItem("addressDetails_state", stateValue);
     setSuggestions([]);
     setLocationDetected(true);
+  };
+
+  const handleCityChange = (value: string) => {
+    setCity(value);
+    localStorage.setItem("addressDetails_city", value);
+  };
+
+  const handleStateChange = (value: string) => {
+    setState(value);
+    localStorage.setItem("addressDetails_state", value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -118,8 +149,8 @@ const AddressDetails = () => {
                 id="address"
                 placeholder="House no, Street, Landmark"
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="min-h-20"
+                onChange={(e) => handleAddressChange(e.target.value)}
+                className={cn("min-h-20", address.length > 10 && "border-success")}
               />
             </div>
 
@@ -146,7 +177,7 @@ const AddressDetails = () => {
                   value={pincode}
                   onChange={(e) => handlePincodeChange(e.target.value)}
                   maxLength={6}
-                  className="h-11 pr-10"
+                  className={cn("h-11 pr-10", locationDetected && "border-success")}
                 />
                 {locationDetected && (
                   <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
@@ -186,13 +217,26 @@ const AddressDetails = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city" className="text-sm font-medium">City</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="city" className="text-sm font-medium">City</Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleGeoLocate}
+                    disabled={geoLocating}
+                    className="h-6 text-xs text-purple hover:text-purple hover:bg-purple/10 px-2"
+                  >
+                    <Navigation className="w-3 h-3 mr-1" />
+                    {geoLocating ? "..." : "Auto"}
+                  </Button>
+                </div>
                 <Input
                   id="city"
                   value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  onChange={(e) => handleCityChange(e.target.value)}
                   placeholder="Enter city"
-                  className="h-11"
+                  className={cn("h-11", city.length > 2 && "border-success")}
                 />
               </div>
               <div className="space-y-2">
@@ -200,9 +244,9 @@ const AddressDetails = () => {
                 <Input
                   id="state"
                   value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  onChange={(e) => handleStateChange(e.target.value)}
                   placeholder="Enter state"
-                  className="h-11"
+                  className={cn("h-11", state.length > 2 && "border-success")}
                 />
               </div>
             </div>

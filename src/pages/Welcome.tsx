@@ -22,7 +22,7 @@ const Welcome = () => {
 
       {/* Header */}
       <div className="flex-shrink-0 text-center pt-20 pb-6 px-6">
-        <img src={auLogo} alt="AU Small Finance Bank" className="h-16 mx-auto mb-6" />
+        <img src={auLogo} alt="AU Small Finance Bank" className="h-24 mx-auto mb-6" />
         <h1 className="text-2xl font-bold text-foreground mb-2">
           Welcome to AU Finance
         </h1>

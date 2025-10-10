@@ -14,11 +14,20 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 
 const PersonalDetails = () => {
-  const [name, setName] = useState("");
-  const [dob, setDob] = useState<Date>();
-  const [gender, setGender] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [validDob, setValidDob] = useState(false);
+  const [name, setName] = useState(() => localStorage.getItem("personalDetails_name") || "");
+  const [dob, setDob] = useState<Date | undefined>(() => {
+    const saved = localStorage.getItem("personalDetails_dob");
+    return saved ? new Date(saved) : undefined;
+  });
+  const [gender, setGender] = useState(() => localStorage.getItem("personalDetails_gender") || "");
+  const [validName, setValidName] = useState(() => {
+    const saved = localStorage.getItem("personalDetails_name") || "";
+    return saved.length >= 3;
+  });
+  const [validDob, setValidDob] = useState(() => {
+    const saved = localStorage.getItem("personalDetails_dob");
+    return !!saved;
+  });
   const [saved, setSaved] = useState(false);
   const navigate = useNavigate();
   const { addPoints, setProgress, triggerConfetti } = useGamification();
@@ -26,6 +35,7 @@ const PersonalDetails = () => {
   const handleNameChange = (value: string) => {
     setName(value);
     setValidName(value.length >= 3);
+    localStorage.setItem("personalDetails_name", value);
   };
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -34,6 +44,14 @@ const PersonalDetails = () => {
     setDob(date);
     setValidDob(!!date);
     setIsCalendarOpen(false); // Auto-close calendar
+    if (date) {
+      localStorage.setItem("personalDetails_dob", date.toISOString());
+    }
+  };
+
+  const handleGenderChange = (value: string) => {
+    setGender(value);
+    localStorage.setItem("personalDetails_gender", value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -85,7 +103,7 @@ const PersonalDetails = () => {
                   placeholder="Enter your full name"
                   value={name}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className="h-11 pr-10"
+                  className={cn("h-11 pr-10", validName && "border-success")}
                 />
                 {validName && (
                   <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
@@ -116,9 +134,11 @@ const PersonalDetails = () => {
                     mode="single"
                     selected={dob}
                     onSelect={handleDobChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
+                    disabled={(date) => {
+                      const today = new Date();
+                      const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                      return date > eighteenYearsAgo || date < new Date("1900-01-01");
+                    }}
                     initialFocus
                     className="pointer-events-auto"
                   />
@@ -134,7 +154,7 @@ const PersonalDetails = () => {
                     "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
                     gender === "male" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setGender("male")}
+                  onClick={() => handleGenderChange("male")}
                 >
                   <UserCircle2 className="w-7 h-7 mx-auto mb-1 text-purple" />
                   <p className="text-sm font-medium">Male</p>
@@ -144,7 +164,7 @@ const PersonalDetails = () => {
                     "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
                     gender === "female" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setGender("female")}
+                  onClick={() => handleGenderChange("female")}
                 >
                   <User className="w-7 h-7 mx-auto mb-1 text-purple" />
                   <p className="text-sm font-medium">Female</p>
@@ -154,7 +174,7 @@ const PersonalDetails = () => {
                     "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
                     gender === "other" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setGender("other")}
+                  onClick={() => handleGenderChange("other")}
                 >
                   <Users className="w-7 h-7 mx-auto mb-1 text-purple" />
                   <p className="text-sm font-medium">Other</p>
