@@ -103,7 +103,7 @@ const PersonalDetails = () => {
                   placeholder="Enter your full name"
                   value={name}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className={cn("h-11 pr-10", validName && "border-success")}
+                  className={cn("h-11 pr-10", validName && "!border-success")}
                 />
                 {validName && (
                   <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
@@ -118,8 +118,9 @@ const PersonalDetails = () => {
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full h-11 justify-start text-left font-normal",
-                      !dob && "text-muted-foreground"
+                      "w-full h-11 justify-start text-left font-normal border-2 border-purple/30 hover:border-purple",
+                      !dob && "text-muted-foreground",
+                      validDob && "!border-success"
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4 text-purple" />

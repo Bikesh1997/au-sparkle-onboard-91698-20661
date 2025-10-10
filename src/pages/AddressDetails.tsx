@@ -150,7 +150,7 @@ const AddressDetails = () => {
                 placeholder="House no, Street, Landmark"
                 value={address}
                 onChange={(e) => handleAddressChange(e.target.value)}
-                className={cn("min-h-20", address.length > 10 && "border-success")}
+                className={cn("min-h-20 border-2 border-purple/30 focus-visible:border-purple", address.length > 10 && "!border-success")}
               />
             </div>
 
@@ -177,7 +177,7 @@ const AddressDetails = () => {
                   value={pincode}
                   onChange={(e) => handlePincodeChange(e.target.value)}
                   maxLength={6}
-                  className={cn("h-11 pr-10", locationDetected && "border-success")}
+                  className={cn("h-11 pr-10", locationDetected && "!border-success")}
                 />
                 {locationDetected && (
                   <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
@@ -236,7 +236,7 @@ const AddressDetails = () => {
                   value={city}
                   onChange={(e) => handleCityChange(e.target.value)}
                   placeholder="Enter city"
-                  className={cn("h-11", city.length > 2 && "border-success")}
+                  className={cn("h-11", city.length > 2 && "!border-success")}
                 />
               </div>
               <div className="space-y-2">
@@ -246,7 +246,7 @@ const AddressDetails = () => {
                   value={state}
                   onChange={(e) => handleStateChange(e.target.value)}
                   placeholder="Enter state"
-                  className={cn("h-11", state.length > 2 && "border-success")}
+                  className={cn("h-11", state.length > 2 && "!border-success")}
                 />
               </div>
             </div>

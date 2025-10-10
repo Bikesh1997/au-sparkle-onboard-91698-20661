@@ -67,9 +67,9 @@ const MobileEntry = () => {
                 }}
                 maxLength={10}
                 className={cn(
-                  "h-12 text-center text-lg pr-10 border-2 transition-colors",
-                  error && "border-destructive",
-                  mobile.length === 10 && !error && "border-success"
+                  "h-12 text-center text-lg pr-10 transition-colors",
+                  error && "!border-destructive",
+                  mobile.length === 10 && !error && "!border-success"
                 )}
               />
               {mobile.length === 10 && !error && (

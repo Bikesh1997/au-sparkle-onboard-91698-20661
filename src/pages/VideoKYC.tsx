@@ -118,7 +118,7 @@ const VideoKYC = () => {
                         maxLength={12}
                         className={cn(
                           "text-base pr-10 h-11",
-                          aadhaar.length === 12 && "border-success"
+                          aadhaar.length === 12 && "!border-success"
                         )}
                       />
                       {aadhaar.length === 12 && (
@@ -140,8 +140,8 @@ const VideoKYC = () => {
                         maxLength={10}
                         className={cn(
                           "text-base uppercase pr-10 h-11",
-                          panError && "border-destructive",
-                          pan.length === 10 && !panError && "border-success"
+                          panError && "!border-destructive",
+                          pan.length === 10 && !panError && "!border-success"
                         )}
                       />
                       {pan.length === 10 && !panError && (
