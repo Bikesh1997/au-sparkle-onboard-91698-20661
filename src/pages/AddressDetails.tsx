@@ -19,7 +19,7 @@ const pincodeData: Record<string, { city: string; state: string; lat: number; ln
 };
 
 const AddressDetails = () => {
-  const [address, setAddress] = useState(() => localStorage.getItem("addressDetails_address") || "");
+  const [address, setAddress] = useState(() => localStorage.getItem("addressDetails_address") || " 20 Saraf Kaskar Indl Estate, B S V Road, Jogeshwari (west)");
   const [pincode, setPincode] = useState(() => localStorage.getItem("addressDetails_pincode") || "");
   const [city, setCity] = useState(() => localStorage.getItem("addressDetails_city") || "");
   const [state, setState] = useState(() => localStorage.getItem("addressDetails_state") || "");
