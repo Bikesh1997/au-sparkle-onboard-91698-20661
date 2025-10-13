@@ -14,15 +14,11 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 
 const PersonalDetails = () => {
+  localStorage.setItem("personalDetails_dob", '1997-10-13T18:30:00.000Z');
   const [name, setName] = useState(() => localStorage.getItem("personalDetails_name") || "");
-  const [dob, setDob] = useState<Date>(() => {
+  const [dob, setDob] = useState<Date | undefined>(() => {
     const saved = localStorage.getItem("personalDetails_dob");
-    if (saved) return new Date(saved);
-  
-    // Default date: 18 years ago from today
-    const today = new Date();
-    const defaultDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    return defaultDob;
+    return saved ? new Date(saved) : undefined;
   });
   const [gender, setGender] = useState(() => localStorage.getItem("personalDetails_gender") || "");
   const [validName, setValidName] = useState(() => {
