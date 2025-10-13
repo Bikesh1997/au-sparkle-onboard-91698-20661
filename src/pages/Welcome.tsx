@@ -37,8 +37,8 @@ const Welcome = () => {
           {/* Features Card */}
           <div className="bg-card rounded-2xl border border-border p-6 space-y-6">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                <Rocket className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center shrink-0">
+                <Rocket className="w-6 h-6 text-purple" />
               </div>
               <div>
                 <h3 className="font-bold text-foreground text-base mb-1">Quick Setup</h3>
@@ -47,8 +47,8 @@ const Welcome = () => {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <Lock className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center shrink-0">
+                <Lock className="w-6 h-6 text-purple" />
               </div>
               <div>
                 <h3 className="font-bold text-foreground text-base mb-1">Secure & Safe</h3>
@@ -57,8 +57,8 @@ const Welcome = () => {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                <Gift className="w-6 h-6 text-red-600" />
+              <div className="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center shrink-0">
+                <Gift className="w-6 h-6 text-purple" />
               </div>
               <div>
                 <h3 className="font-bold text-foreground text-base mb-1">Earn Rewards</h3>
