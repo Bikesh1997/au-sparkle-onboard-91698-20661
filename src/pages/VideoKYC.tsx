@@ -10,8 +10,8 @@ import { Video, Check, AlertCircle, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const VideoKYC = () => {
-  const [aadhaar, setAadhaar] = useState("");
-  const [pan, setPan] = useState("");
+  const [aadhaar, setAadhaar] = useState(() => localStorage.getItem("aadhaar") || "");
+  const [pan, setPan] = useState(() => localStorage.getItem("pan") || "");
   const [panError, setPanError] = useState("");
   const [started, setStarted] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -21,11 +21,13 @@ const VideoKYC = () => {
   const handleAadhaarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 12);
     setAadhaar(value);
+    localStorage.setItem("aadhaar", value);
   };
 
   const handlePanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().slice(0, 10);
     setPan(value);
+    localStorage.setItem("pan", value);
     
     // PAN format validation: AAAAA9999A
     if (value.length === 10) {
