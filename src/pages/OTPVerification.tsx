@@ -15,7 +15,7 @@ const OTPVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { addPoints, setProgress } = useGamification();
-  const mobile = location.state?.mobile || "";
+  const mobile = location.state?.mobile || localStorage.getItem("mobile") || "";
 
   useEffect(() => {
     if (timer > 0) {

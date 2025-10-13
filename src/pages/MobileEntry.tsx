@@ -10,10 +10,17 @@ import { Phone, Check, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MobileEntry = () => {
-  const [mobile, setMobile] = useState("");
+  const [mobile, setMobile] = useState(() => localStorage.getItem("mobile") || "");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setProgress } = useGamification();
+
+  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setMobile(value);
+    localStorage.setItem("mobile", value);
+    setError("");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,10 +68,7 @@ const MobileEntry = () => {
                 type="tel"
                 placeholder="Enter 10-digit mobile number"
                 value={mobile}
-                onChange={(e) => {
-                  setMobile(e.target.value.replace(/\D/g, '').slice(0, 10));
-                  setError("");
-                }}
+                onChange={handleMobileChange}
                 maxLength={10}
                 className={cn(
                   "h-12 text-center text-lg pr-10 transition-colors",
