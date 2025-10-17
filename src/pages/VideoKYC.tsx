@@ -53,7 +53,7 @@ const VideoKYC = () => {
     setTimeout(() => {
       setCompleted(true);
       addPoints(150);
-      setProgress(80);
+      setProgress(90);
       unlockBadge("verified-user");
     }, 3000);
   };
@@ -67,7 +67,7 @@ const VideoKYC = () => {
       {/* Fixed Top Progress Bar */}
       <div className="fixed top-0 left-0 right-0 bg-background border-b border-border p-4 z-10">
         <div className="w-full max-w-md mx-auto pl-12">
-          <ProgressBar value={80} />
+          <ProgressBar value={90} />
         </div>
       </div>
 
