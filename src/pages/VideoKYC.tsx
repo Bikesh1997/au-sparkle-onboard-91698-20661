@@ -79,10 +79,10 @@ const VideoKYC = () => {
           <Video className="w-6 h-6 text-purple" />
         </div>
         <h2 className="text-lg font-bold text-foreground mb-1">
-          Video KYC Verification
+          Quick Video Verification 🎥
         </h2>
         <p className="text-xs text-muted-foreground">
-          Quick 2-minute video call
+          Just 2 minutes to verify—let's do this!
         </p>
       </div>
 

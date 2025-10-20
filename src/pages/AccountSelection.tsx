@@ -73,10 +73,10 @@ const AccountSelection = () => {
           <Wallet className="w-6 h-6 text-purple" />
         </div>
         <h2 className="text-lg font-bold text-foreground mb-1">
-          Choose Your Account
+          Pick Your Perfect Account 💳
         </h2>
         <p className="text-xs text-muted-foreground">
-          Select the account that fits your needs
+          Choose what works best for you
         </p>
       </div>
 

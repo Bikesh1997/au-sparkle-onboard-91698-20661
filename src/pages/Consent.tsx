@@ -42,10 +42,10 @@ const Consent = () => {
           <FileCheck className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Terms & Consent
+          Aadhaar Verification 🛡️
         </h2>
         <p className="text-sm text-muted-foreground">
-          Tap to accept
+          We'll fetch your verified details from UIDAI—quick & secure!
         </p>
       </div>
 
@@ -131,12 +131,12 @@ const Consent = () => {
       {/* Fixed Bottom CTA */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4">
         <div className="w-full max-w-md mx-auto">
-          <Button 
+            <Button 
             onClick={handleSubmit}
             className="w-full h-12 text-base font-semibold"
             disabled={!termsAccepted || !dataConsent}
           >
-            Submit & Continue to KYC
+            Authorize & Continue
           </Button>
         </div>
       </div>

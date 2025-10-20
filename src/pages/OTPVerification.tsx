@@ -66,10 +66,10 @@ const OTPVerification = () => {
           <Shield className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Verify OTP
+          Almost there! 🔢
         </h2>
         <p className="text-sm text-muted-foreground mb-1">
-          Enter the 6-digit code sent to
+          Enter the 6-digit OTP we sent to
         </p>
         <p className="text-sm text-foreground font-semibold">+91 {mobile}</p>
       </div>

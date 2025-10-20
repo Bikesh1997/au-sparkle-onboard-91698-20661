@@ -84,10 +84,10 @@ const PersonalDetails = () => {
           <User className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Personal Details
+          Tell Us About Yourself 🧑
         </h2>
         <p className="text-sm text-muted-foreground">
-          Help us know you better
+          We'd love to know you better!
         </p>
       </div>
 

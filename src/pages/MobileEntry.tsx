@@ -52,10 +52,10 @@ const MobileEntry = () => {
           <Phone className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Enter Mobile Number
+          Hey there! 👋
         </h2>
         <p className="text-sm text-muted-foreground">
-          We'll send you a verification code
+          Enter the mobile number linked with your Aadhaar
         </p>
       </div>
 

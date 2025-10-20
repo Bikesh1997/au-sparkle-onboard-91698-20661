@@ -36,10 +36,10 @@ const KYCStatus = () => {
           <CheckCircle2 className="w-7 h-7 text-success" />
         </div>
         <h1 className="text-xl font-bold text-foreground mb-1">
-          You're Verified!
+          Congratulations, You Did It! 🎉
         </h1>
         <p className="text-xs text-muted-foreground">
-          Your account is now active and ready to use
+          Your account is all set up and ready to roll
         </p>
       </div>
 

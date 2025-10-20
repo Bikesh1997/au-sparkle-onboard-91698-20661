@@ -132,10 +132,10 @@ const AddressDetails = () => {
           <MapPin className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Address Details
+          Where Can We Find You? 🏠
         </h2>
         <p className="text-sm text-muted-foreground">
-          Where should we reach you?
+          Let us know your current address
         </p>
       </div>
 
@@ -143,6 +143,18 @@ const AddressDetails = () => {
       <div className="flex-1 overflow-y-auto px-6 pb-32">
         <div className="w-full max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Same as Aadhaar Toggle */}
+            <div className="flex items-center justify-between p-4 bg-purple/5 rounded-xl border border-purple/20">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-purple" />
+                <span className="text-sm font-medium text-foreground">Same as Aadhaar Address?</span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" />
+                <div className="w-11 h-6 bg-muted rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-purple after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="address" className="text-sm font-medium">Full Address</Label>
               <Textarea
