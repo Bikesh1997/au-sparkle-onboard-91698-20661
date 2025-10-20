@@ -11,17 +11,24 @@ import { cn } from "@/lib/utils";
 const Consent = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [dataConsent, setDataConsent] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verified, setVerified] = useState(false);
   const navigate = useNavigate();
-  const { addPoints, setProgress, triggerConfetti, unlockBadge } = useGamification();
+  const { addPoints, setProgress } = useGamification();
 
   const handleSubmit = () => {
     if (termsAccepted && dataConsent) {
-      setSaved(true);
-      addPoints(30);
-      setProgress(100);
-      unlockBadge("new-member");
-      setTimeout(() => navigate("/video-kyc"), 300);
+      setIsVerifying(true);
+      // Simulate API call
+      setTimeout(() => {
+        setIsVerifying(false);
+        setVerified(true);
+        addPoints(10);
+        setProgress(25);
+        setTimeout(() => {
+          navigate("/uidai-otp");
+        }, 1500);
+      }, 2000);
     }
   };
 
@@ -30,11 +37,11 @@ const Consent = () => {
       {/* Fixed Top Progress Bar */}
       <div className="fixed top-0 left-0 right-0 bg-background border-b border-border p-4 z-10">
         <div className="w-full max-w-md mx-auto pl-12">
-          <ProgressBar value={70} />
+          <ProgressBar value={20} />
         </div>
       </div>
 
-      <BackButton to="/account-selection" />
+      <BackButton to="/otp-verification" />
       
       {/* Header */}
       <div className="flex-shrink-0 text-center pt-20 pb-6 px-6">
@@ -51,7 +58,21 @@ const Consent = () => {
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto px-6 pb-32">
-        <div className="w-full max-w-md mx-auto space-y-3">
+        <div className="w-full max-w-md mx-auto">
+          {isVerifying ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 border-4 border-purple border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-lg font-medium text-foreground">Verifying Aadhaar…</p>
+            </div>
+          ) : verified ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="w-8 h-8 text-success" />
+              </div>
+              <p className="text-lg font-bold text-success">Authorization Successful!</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
           {/* Terms Card - Tappable */}
           <div
             onClick={() => setTermsAccepted(!termsAccepted)}
@@ -122,24 +143,28 @@ const Consent = () => {
             </div>
           </div>
 
-          <p className="text-xs text-center text-muted-foreground mt-4 px-2">
-            Your information is secure and encrypted
-          </p>
+              <p className="text-xs text-center text-muted-foreground mt-4 px-2">
+                Your information is secure and encrypted
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Fixed Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4">
-        <div className="w-full max-w-md mx-auto">
-            <Button 
-            onClick={handleSubmit}
-            className="w-full h-12 text-base font-semibold"
-            disabled={!termsAccepted || !dataConsent}
-          >
-            Authorize & Continue
-          </Button>
+      {!isVerifying && !verified && (
+        <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4">
+          <div className="w-full max-w-md mx-auto">
+              <Button 
+              onClick={handleSubmit}
+              className="w-full h-12 text-base font-semibold"
+              disabled={!termsAccepted || !dataConsent}
+            >
+              Authorize & Continue
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

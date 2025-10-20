@@ -6,10 +6,12 @@ import { GamificationProvider } from "./context/GamificationContext";
 import Welcome from "./pages/Welcome";
 import MobileEntry from "./pages/MobileEntry";
 import OTPVerification from "./pages/OTPVerification";
+import Consent from "./pages/Consent";
+import UidaiOTP from "./pages/UidaiOTP";
+import PANVerification from "./pages/PANVerification";
 import PersonalDetails from "./pages/PersonalDetails";
 import AddressDetails from "./pages/AddressDetails";
 import AccountSelection from "./pages/AccountSelection";
-import Consent from "./pages/Consent";
 import VideoKYC from "./pages/VideoKYC";
 import KYCStatus from "./pages/KYCStatus";
 import NotFound from "./pages/NotFound";
@@ -25,10 +27,12 @@ const App = () => (
             <Route path="/" element={<Welcome />} />
             <Route path="/mobile-entry" element={<MobileEntry />} />
             <Route path="/otp-verification" element={<OTPVerification />} />
+            <Route path="/consent" element={<Consent />} />
+            <Route path="/uidai-otp" element={<UidaiOTP />} />
+            <Route path="/pan-verification" element={<PANVerification />} />
             <Route path="/personal-details" element={<PersonalDetails />} />
             <Route path="/address-details" element={<AddressDetails />} />
             <Route path="/account-selection" element={<AccountSelection />} />
-            <Route path="/consent" element={<Consent />} />
             <Route path="/video-kyc" element={<VideoKYC />} />
             <Route path="/kyc-status" element={<KYCStatus />} />
             <Route path="*" element={<NotFound />} />
