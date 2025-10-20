@@ -47,7 +47,7 @@ const PersonalDetails = () => {
     e.preventDefault();
     if (isFormValid) {
       addPoints(15);
-      setProgress(50);
+      setProgress(55);
       setTimeout(() => navigate("/address-details"), 300);
     }
   };
@@ -59,7 +59,7 @@ const PersonalDetails = () => {
       {/* Fixed Top Progress Bar */}
       <div className="fixed top-0 left-0 right-0 bg-background border-b border-border p-4 z-10">
         <div className="w-full max-w-md mx-auto pl-12">
-          <ProgressBar value={40} />
+          <ProgressBar value={50} />
         </div>
       </div>
 

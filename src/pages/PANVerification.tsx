@@ -1,18 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/ProgressBar";
 import { BackButton } from "@/components/BackButton";
 import { useGamification } from "@/context/GamificationContext";
-import { CreditCard, Check, Upload, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { CreditCard, Check } from "lucide-react";
 
 const PANVerification = () => {
-  const [panNumber, setPanNumber] = useState("");
-  const [panImage, setPanImage] = useState<File | null>(null);
-  const [validPan, setValidPan] = useState(false);
+  const [pan, setPan] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [verified, setVerified] = useState(false);
   const navigate = useNavigate();
@@ -24,31 +20,22 @@ const PANVerification = () => {
     return panRegex.test(value);
   };
 
+  const isValidPAN = validatePAN(pan);
+
   const handlePanChange = (value: string) => {
-    const upperValue = value.toUpperCase();
-    setPanNumber(upperValue);
-    setValidPan(validatePAN(upperValue));
+    const upperValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+    setPan(upperValue);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setPanImage(e.target.files[0]);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setPanImage(null);
-  };
-
-  const handleVerify = async () => {
-    if (validPan) {
+  const handleVerify = () => {
+    if (isValidPAN) {
       setIsVerifying(true);
       // Simulate API call
       setTimeout(() => {
         setIsVerifying(false);
         setVerified(true);
         addPoints(20);
-        setProgress(40);
+        setProgress(45);
         setTimeout(() => {
           navigate("/personal-details");
         }, 1500);
@@ -96,67 +83,38 @@ const PANVerification = () => {
               <p className="text-lg font-bold text-success">✅ PAN Verified Successfully</p>
             </div>
           ) : (
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <Label htmlFor="pan" className="text-sm font-medium">PAN Number</Label>
-                <div className="relative">
-                  <Input
-                    id="pan"
-                    type="text"
-                    placeholder="Enter PAN (e.g., ABCDE1234F)"
-                    value={panNumber}
-                    onChange={(e) => handlePanChange(e.target.value)}
-                    maxLength={10}
-                    className={cn("h-11 pr-10 uppercase", validPan && "!border-success")}
-                  />
-                  {validPan && (
-                    <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Format: 5 letters + 4 digits + 1 letter
-                </p>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Enter PAN Number
+                </label>
+                <Input
+                  type="text"
+                  maxLength={10}
+                  value={pan}
+                  onChange={(e) => handlePanChange(e.target.value)}
+                  placeholder="ABCDE1234F"
+                  className="text-center text-lg tracking-wider uppercase"
+                />
+                {pan.length > 0 && !isValidPAN && (
+                  <p className="text-sm text-destructive mt-2">
+                    Please enter a valid PAN (5 letters + 4 digits + 1 letter)
+                  </p>
+                )}
+                {isValidPAN && (
+                  <div className="flex items-center gap-2 mt-2 text-success">
+                    <Check className="w-4 h-4" />
+                    <p className="text-sm">Valid PAN format</p>
+                  </div>
+                )}
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Upload PAN Card (Optional)</Label>
-                {panImage ? (
-                  <div className="relative border-2 border-purple/30 rounded-lg p-4 bg-purple/5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple/10 rounded-lg flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-purple" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-foreground">{panImage.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {(panImage.size / 1024).toFixed(2)} KB
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleRemoveImage}
-                        className="h-8 w-8"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-purple/30 rounded-lg p-6 cursor-pointer hover:border-purple transition-colors bg-purple/5">
-                    <Upload className="w-8 h-8 text-purple mb-2" />
-                    <p className="text-sm font-medium text-foreground mb-1">Upload PAN Card</p>
-                    <p className="text-xs text-muted-foreground">Front side only • Max 5MB</p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </label>
-                )}
+              <div className="bg-purple/5 border border-purple/20 rounded-xl p-4">
+                <p className="text-xs text-muted-foreground text-center">
+                  <strong className="text-foreground">Format:</strong> 5 letters + 4 digits + 1 letter
+                  <br />
+                  Example: ABCDE1234F
+                </p>
               </div>
             </div>
           )}
@@ -170,7 +128,7 @@ const PANVerification = () => {
             <Button 
               onClick={handleVerify}
               className="w-full h-12 text-base font-semibold"
-              disabled={!validPan}
+              disabled={!isValidPAN}
             >
               Continue
             </Button>

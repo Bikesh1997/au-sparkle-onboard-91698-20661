@@ -59,7 +59,8 @@ const VideoKYC = () => {
   };
 
   const handleContinue = () => {
-    setTimeout(() => navigate("/kyc-status"), 500);
+    triggerConfetti();
+    setTimeout(() => navigate("/success"), 500);
   };
 
   return (

@@ -19,7 +19,8 @@ const pincodeData: Record<string, { city: string; state: string; lat: number; ln
 };
 
 const AddressDetails = () => {
-  const [address, setAddress] = useState(() => localStorage.getItem("addressDetails_address") || " 20 Saraf Kaskar Indl Estate, B S V Road, Jogeshwari (west)");
+  const [sameAsAadhaar, setSameAsAadhaar] = useState(false);
+  const [address, setAddress] = useState(() => localStorage.getItem("addressDetails_address") || "");
   const [pincode, setPincode] = useState(() => localStorage.getItem("addressDetails_pincode") || "");
   const [city, setCity] = useState(() => localStorage.getItem("addressDetails_city") || "");
   const [state, setState] = useState(() => localStorage.getItem("addressDetails_state") || "");
@@ -29,6 +30,35 @@ const AddressDetails = () => {
   const [saved, setSaved] = useState(false);
   const navigate = useNavigate();
   const { addPoints, setProgress, triggerConfetti } = useGamification();
+
+  // Aadhaar address data
+  const aadhaarAddress = {
+    address: "20 Saraf Kaskar Indl Estate, B S V Road, Jogeshwari (west)",
+    pincode: "400102",
+    city: "Mumbai",
+    state: "Maharashtra"
+  };
+
+  const handleToggleSameAsAadhaar = (checked: boolean) => {
+    setSameAsAadhaar(checked);
+    if (checked) {
+      setAddress(aadhaarAddress.address);
+      setPincode(aadhaarAddress.pincode);
+      setCity(aadhaarAddress.city);
+      setState(aadhaarAddress.state);
+      localStorage.setItem("addressDetails_address", aadhaarAddress.address);
+      localStorage.setItem("addressDetails_pincode", aadhaarAddress.pincode);
+      localStorage.setItem("addressDetails_city", aadhaarAddress.city);
+      localStorage.setItem("addressDetails_state", aadhaarAddress.state);
+      setLocationDetected(true);
+    } else {
+      setAddress("");
+      setPincode("");
+      setCity("");
+      setState("");
+      setLocationDetected(false);
+    }
+  };
 
   const handleAddressChange = (value: string) => {
     setAddress(value);
@@ -108,8 +138,8 @@ const AddressDetails = () => {
     if (address && pincode.length === 6 && city && state) {
       setSaved(true);
       addPoints(15);
-      setProgress(50);
-      setTimeout(() => navigate("/account-selection"), 300);
+      setProgress(60);
+      setTimeout(() => navigate("/preview-confirmation"), 300);
     }
   };
 
@@ -150,7 +180,12 @@ const AddressDetails = () => {
                 <span className="text-sm font-medium text-foreground">Same as Aadhaar Address?</span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
+                <input 
+                  type="checkbox" 
+                  className="sr-only peer" 
+                  checked={sameAsAadhaar}
+                  onChange={(e) => handleToggleSameAsAadhaar(e.target.checked)}
+                />
                 <div className="w-11 h-6 bg-muted rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-purple after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
             </div>

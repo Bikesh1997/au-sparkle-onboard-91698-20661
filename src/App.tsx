@@ -11,8 +11,12 @@ import UidaiOTP from "./pages/UidaiOTP";
 import PANVerification from "./pages/PANVerification";
 import PersonalDetails from "./pages/PersonalDetails";
 import AddressDetails from "./pages/AddressDetails";
+import PreviewConfirmation from "./pages/PreviewConfirmation";
+import BankBranchSelection from "./pages/BankBranchSelection";
+import FinalReminder from "./pages/FinalReminder";
 import AccountSelection from "./pages/AccountSelection";
 import VideoKYC from "./pages/VideoKYC";
+import SuccessScreen from "./pages/SuccessScreen";
 import KYCStatus from "./pages/KYCStatus";
 import NotFound from "./pages/NotFound";
 
@@ -32,8 +36,12 @@ const App = () => (
             <Route path="/pan-verification" element={<PANVerification />} />
             <Route path="/personal-details" element={<PersonalDetails />} />
             <Route path="/address-details" element={<AddressDetails />} />
+            <Route path="/preview-confirmation" element={<PreviewConfirmation />} />
+            <Route path="/bank-branch-selection" element={<BankBranchSelection />} />
+            <Route path="/final-reminder" element={<FinalReminder />} />
             <Route path="/account-selection" element={<AccountSelection />} />
             <Route path="/video-kyc" element={<VideoKYC />} />
+            <Route path="/success" element={<SuccessScreen />} />
             <Route path="/kyc-status" element={<KYCStatus />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
