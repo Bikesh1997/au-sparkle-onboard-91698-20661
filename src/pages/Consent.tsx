@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/ProgressBar";
 import { BackButton } from "@/components/BackButton";
 import { useGamification } from "@/context/GamificationContext";
-import { FileCheck, Check, FileText, Lock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FileCheck, Check } from "lucide-react";
 
 const Consent = () => {
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [dataConsent, setDataConsent] = useState(false);
+  const [aadhaar, setAadhaar] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [verified, setVerified] = useState(false);
   const navigate = useNavigate();
   const { addPoints, setProgress } = useGamification();
 
+  const isValidAadhaar = aadhaar.length === 12 && /^\d{12}$/.test(aadhaar);
+
   const handleSubmit = () => {
-    if (termsAccepted && dataConsent) {
+    if (isValidAadhaar) {
       setIsVerifying(true);
       // Simulate API call
       setTimeout(() => {
@@ -52,7 +52,7 @@ const Consent = () => {
           Aadhaar Verification 🛡️
         </h2>
         <p className="text-sm text-muted-foreground">
-          We'll fetch your verified details from UIDAI—quick & secure!
+          Authorize us to fetch your verified details from UIDAI
         </p>
       </div>
 
@@ -62,89 +62,41 @@ const Consent = () => {
           {isVerifying ? (
             <div className="text-center py-12">
               <div className="w-16 h-16 border-4 border-purple border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-lg font-medium text-foreground">Verifying Aadhaar…</p>
+              <p className="text-lg font-medium text-foreground">Sending OTP…</p>
             </div>
           ) : verified ? (
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8 text-success" />
               </div>
-              <p className="text-lg font-bold text-success">Authorization Successful!</p>
+              <p className="text-lg font-bold text-success">OTP Sent Successfully!</p>
             </div>
           ) : (
-            <div className="space-y-3">
-          {/* Terms Card - Tappable */}
-          <div
-            onClick={() => setTermsAccepted(!termsAccepted)}
-            className={cn(
-              "p-5 rounded-xl cursor-pointer transition-all duration-200 border-2",
-              termsAccepted
-                ? "border-purple bg-purple/5 shadow-lg shadow-purple/10"
-                : "border-border hover:border-purple/30"
-            )}
-          >
-            <div className="flex items-start gap-3">
-              <Checkbox 
-                checked={termsAccepted}
-                onCheckedChange={(checked) => setTermsAccepted(!!checked)}
-                className="mt-1 data-[state=checked]:bg-purple data-[state=checked]:border-purple"
-              />
-              <div
-                className={cn(
-                  "w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-all",
-                  termsAccepted
-                    ? "bg-purple text-purple-foreground"
-                    : "bg-purple/10 text-purple"
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Enter your 12-digit Aadhaar Number
+                </label>
+                <Input
+                  type="text"
+                  maxLength={12}
+                  value={aadhaar}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '');
+                    setAadhaar(value);
+                  }}
+                  placeholder="XXXX XXXX XXXX"
+                  className="text-center text-lg tracking-wider"
+                />
+                {aadhaar.length > 0 && !isValidAadhaar && (
+                  <p className="text-sm text-destructive mt-2">
+                    Please enter a valid 12-digit Aadhaar number
+                  </p>
                 )}
-              >
-                <FileText className="w-6 h-6" />
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-foreground mb-1 text-base">Terms & Conditions</h3>
-                <p className="text-sm text-muted-foreground">
-                  I agree to AU Bank's terms of service and account opening conditions
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Data Consent Card - Tappable */}
-          <div
-            onClick={() => setDataConsent(!dataConsent)}
-            className={cn(
-              "p-5 rounded-xl cursor-pointer transition-all duration-200 border-2",
-              dataConsent
-                ? "border-purple bg-purple/5 shadow-lg shadow-purple/10"
-                : "border-border hover:border-purple/30"
-            )}
-          >
-            <div className="flex items-start gap-3">
-              <Checkbox 
-                checked={dataConsent}
-                onCheckedChange={(checked) => setDataConsent(!!checked)}
-                className="mt-1 data-[state=checked]:bg-purple data-[state=checked]:border-purple"
-              />
-              <div
-                className={cn(
-                  "w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-all",
-                  dataConsent
-                    ? "bg-purple text-purple-foreground"
-                    : "bg-purple/10 text-purple"
-                )}
-              >
-                <Lock className="w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-foreground mb-1 text-base">Data Consent</h3>
-                <p className="text-sm text-muted-foreground">
-                  I authorize AU Bank to process my personal data for KYC verification
-                </p>
-              </div>
-            </div>
-          </div>
-
-              <p className="text-xs text-center text-muted-foreground mt-4 px-2">
-                Your information is secure and encrypted
+              <p className="text-xs text-center text-muted-foreground px-2">
+                OTP will be sent to your registered mobile number
               </p>
             </div>
           )}
@@ -155,12 +107,12 @@ const Consent = () => {
       {!isVerifying && !verified && (
         <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4">
           <div className="w-full max-w-md mx-auto">
-              <Button 
+            <Button 
               onClick={handleSubmit}
               className="w-full h-12 text-base font-semibold"
-              disabled={!termsAccepted || !dataConsent}
+              disabled={!isValidAadhaar}
             >
-              Authorize & Continue
+              Send OTP
             </Button>
           </div>
         </div>
