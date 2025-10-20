@@ -33,7 +33,7 @@ const OTPVerification = () => {
       
       // Auto-advance after brief success indication
       setTimeout(() => {
-        navigate("/consent");
+        navigate("/personal-details");
       }, 1000);
     }
   }, [otp, verified, addPoints, setProgress, navigate]);

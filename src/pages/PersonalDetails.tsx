@@ -6,53 +6,66 @@ import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/ProgressBar";
 import { BackButton } from "@/components/BackButton";
 import { useGamification } from "@/context/GamificationContext";
-import { User, Check, Mail, GraduationCap, Flag } from "lucide-react";
+import { User, Check, UserCircle2, Users } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 
 const PersonalDetails = () => {
-  // Auto-populated from Aadhaar/PAN
-  const [name] = useState("Rajesh Kumar Singh"); // Auto-filled
-  const [dob] = useState<Date>(new Date("1997-10-13")); // Auto-filled
-  const [gender] = useState("male"); // Auto-filled
-  const [mobile] = useState("9876543210"); // Auto-filled
-
-  // Manual/Selectable fields
-  const [maritalStatus, setMaritalStatus] = useState("");
-  const [email, setEmail] = useState("");
-  const [qualification, setQualification] = useState("");
-  const [isAbettedPerson, setIsAbettedPerson] = useState("");
-  const [isIndianCitizen, setIsIndianCitizen] = useState("");
-  
-  const [validEmail, setValidEmail] = useState(false);
-  
+  localStorage.setItem("personalDetails_dob", '1997-10-13T18:30:00.000Z');
+  const [name, setName] = useState(() => localStorage.getItem("personalDetails_name") || "");
+  const [dob, setDob] = useState<Date | undefined>(() => {
+    const saved = localStorage.getItem("personalDetails_dob");
+    return saved ? new Date(saved) : undefined;
+  });
+  const [gender, setGender] = useState(() => localStorage.getItem("personalDetails_gender") || "");
+  const [validName, setValidName] = useState(() => {
+    const saved = localStorage.getItem("personalDetails_name") || "";
+    return saved.length >= 3;
+  });
+  const [validDob, setValidDob] = useState(() => {
+    const saved = localStorage.getItem("personalDetails_dob");
+    return !!saved;
+  });
+  const [saved, setSaved] = useState(false);
   const navigate = useNavigate();
-  const { addPoints, setProgress } = useGamification();
+  const { addPoints, setProgress, triggerConfetti } = useGamification();
 
-  const validateEmail = (value: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value);
+  const handleNameChange = (value: string) => {
+    setName(value);
+    setValidName(value.length >= 3);
+    localStorage.setItem("personalDetails_name", value);
   };
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-    setValidEmail(validateEmail(value));
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const handleDobChange = (date: Date | undefined) => {
+    setDob(date);
+    setValidDob(!!date);
+    setIsCalendarOpen(false); // Auto-close calendar
+    if (date) {
+      localStorage.setItem("personalDetails_dob", date.toISOString());
+    }
+  };
+
+  const handleGenderChange = (value: string) => {
+    setGender(value);
+    localStorage.setItem("personalDetails_gender", value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isFormValid) {
+    if (validName && validDob && gender) {
+      setSaved(true);
       addPoints(15);
-      setProgress(50);
+      setProgress(30);
       setTimeout(() => navigate("/address-details"), 300);
     }
   };
 
-  const isFormValid = maritalStatus && validEmail && qualification && isAbettedPerson && isIndianCitizen;
+  const isFormValid = validName && validDob && gender;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -63,7 +76,7 @@ const PersonalDetails = () => {
         </div>
       </div>
 
-      <BackButton to="/pan-verification" />
+      <BackButton to="/otp-verification" />
       
       {/* Header */}
       <div className="flex-shrink-0 text-center pt-20 pb-6 px-6">
@@ -71,10 +84,10 @@ const PersonalDetails = () => {
           <User className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Personal Information 📝
+          Tell Us About Yourself 🧑
         </h2>
         <p className="text-sm text-muted-foreground">
-          Auto-filled from Aadhaar/PAN • Complete remaining details
+          We'd love to know you better!
         </p>
       </div>
 
@@ -82,126 +95,91 @@ const PersonalDetails = () => {
       <div className="flex-1 overflow-y-auto px-6 pb-32">
         <div className="w-full max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Auto-filled fields (read-only) */}
-            <div className="bg-purple/5 border border-purple/20 rounded-lg p-4 space-y-3">
-              <p className="text-xs font-semibold text-purple uppercase tracking-wide">Auto-filled from Aadhaar/PAN</p>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs text-muted-foreground">Full Name</Label>
-                  <p className="text-sm font-medium text-foreground">{name}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Mobile</Label>
-                  <p className="text-sm font-medium text-foreground">{mobile}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs text-muted-foreground">Date of Birth</Label>
-                  <p className="text-sm font-medium text-foreground">{format(dob, "PPP")}</p>
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">Gender</Label>
-                  <p className="text-sm font-medium text-foreground capitalize">{gender}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Manual/Selectable fields */}
             <div className="space-y-2">
-              <Label htmlFor="maritalStatus" className="text-sm font-medium">Marital Status 💍</Label>
-              <Select value={maritalStatus} onValueChange={setMaritalStatus}>
-                <SelectTrigger className="h-11 border-2 border-purple/30">
-                  <SelectValue placeholder="Select marital status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="single">Single</SelectItem>
-                  <SelectItem value="married">Married</SelectItem>
-                  <SelectItem value="divorced">Divorced</SelectItem>
-                  <SelectItem value="widowed">Widowed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">Email 📧</Label>
+              <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
               <div className="relative">
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => handleEmailChange(e.target.value)}
-                  className={cn("h-11 pr-10", validEmail && "!border-success")}
+                  id="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => handleNameChange(e.target.value)}
+                  className={cn("h-11 pr-10", validName && "!border-success")}
                 />
-                {validEmail && (
+                {validName && (
                   <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
                 )}
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="qualification" className="text-sm font-medium">Qualification 🎓</Label>
-              <Select value={qualification} onValueChange={setQualification}>
-                <SelectTrigger className="h-11 border-2 border-purple/30">
-                  <SelectValue placeholder="Select your qualification" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="high-school">High School</SelectItem>
-                  <SelectItem value="undergraduate">Undergraduate</SelectItem>
-                  <SelectItem value="graduate">Graduate</SelectItem>
-                  <SelectItem value="postgraduate">Postgraduate</SelectItem>
-                  <SelectItem value="doctorate">Doctorate</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="text-sm font-medium">Date of Birth</Label>
+              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full h-11 justify-start text-left font-normal border-2 border-purple/30 hover:border-purple",
+                      !dob && "text-muted-foreground",
+                      validDob && "!border-success"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 text-purple" />
+                    {dob ? format(dob, "PPP") : <span>Pick your date of birth</span>}
+                    {validDob && (
+                      <Check className="ml-auto w-5 h-5 text-success animate-bounce-in" />
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={dob}
+                    onSelect={handleDobChange}
+                    disabled={(date) => {
+                      const today = new Date();
+                      const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                      return date > eighteenYearsAgo || date < new Date("1900-01-01");
+                    }}
+                    initialFocus
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Are you an Abetted Person?</Label>
-              <div className="grid grid-cols-2 gap-3">
+              <Label className="text-sm font-medium">Gender</Label>
+              <div className="grid grid-cols-3 gap-3">
                 <div
                   className={cn(
-                    "p-4 rounded-xl cursor-pointer transition-all text-center border-2",
-                    isAbettedPerson === "no" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
+                    "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
+                    gender === "male" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setIsAbettedPerson("no")}
+                  onClick={() => handleGenderChange("male")}
                 >
-                  <p className="text-base font-medium">No</p>
+                  <UserCircle2 className="w-7 h-7 mx-auto mb-1 text-purple" />
+                  <p className="text-sm font-medium">Male</p>
                 </div>
                 <div
                   className={cn(
-                    "p-4 rounded-xl cursor-pointer transition-all text-center border-2",
-                    isAbettedPerson === "yes" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
+                    "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
+                    gender === "female" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setIsAbettedPerson("yes")}
+                  onClick={() => handleGenderChange("female")}
                 >
-                  <p className="text-base font-medium">Yes</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Indian Citizen? 🇮🇳</Label>
-              <div className="grid grid-cols-2 gap-3">
-                <div
-                  className={cn(
-                    "p-4 rounded-xl cursor-pointer transition-all text-center border-2",
-                    isIndianCitizen === "yes" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
-                  )}
-                  onClick={() => setIsIndianCitizen("yes")}
-                >
-                  <p className="text-base font-medium">Yes</p>
+                  <User className="w-7 h-7 mx-auto mb-1 text-purple" />
+                  <p className="text-sm font-medium">Female</p>
                 </div>
                 <div
                   className={cn(
-                    "p-4 rounded-xl cursor-pointer transition-all text-center border-2",
-                    isIndianCitizen === "no" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
+                    "p-3 rounded-xl cursor-pointer transition-all text-center border-2",
+                    gender === "other" ? "border-purple bg-purple/5" : "border-border hover:border-purple/30"
                   )}
-                  onClick={() => setIsIndianCitizen("no")}
+                  onClick={() => handleGenderChange("other")}
                 >
-                  <p className="text-base font-medium">No</p>
+                  <Users className="w-7 h-7 mx-auto mb-1 text-purple" />
+                  <p className="text-sm font-medium">Other</p>
                 </div>
               </div>
             </div>
