@@ -1,51 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/ProgressBar";
 import { BackButton } from "@/components/BackButton";
 import { useGamification } from "@/context/GamificationContext";
-import { Video, Check, AlertCircle, Shield } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Video, Check, Shield } from "lucide-react";
 
 const VideoKYC = () => {
-  const [aadhaar, setAadhaar] = useState(() => localStorage.getItem("aadhaar") || "");
-  const [pan, setPan] = useState(() => localStorage.getItem("pan") || "");
-  const [panError, setPanError] = useState("");
   const [started, setStarted] = useState(false);
   const [completed, setCompleted] = useState(false);
   const navigate = useNavigate();
   const { addPoints, setProgress, triggerConfetti, unlockBadge } = useGamification();
 
-  const handleAadhaarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 12);
-    setAadhaar(value);
-    localStorage.setItem("aadhaar", value);
-  };
-
-  const handlePanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().slice(0, 10);
-    setPan(value);
-    localStorage.setItem("pan", value);
-    
-    // PAN format validation: AAAAA9999A
-    if (value.length === 10) {
-      const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-      if (!panRegex.test(value)) {
-        setPanError("Invalid PAN format");
-      } else {
-        setPanError("");
-      }
-    } else {
-      setPanError("");
-    }
-  };
-
-  const isValid = aadhaar.length === 12 && pan.length === 10 && !panError;
-
   const handleStart = () => {
-    if (!isValid) return;
     
     setStarted(true);
     
@@ -107,66 +75,6 @@ const VideoKYC = () => {
           <div className="space-y-5">
             {!started ? (
               <>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
-                      Aadhaar Number
-                    </label>
-                    <div className="relative">
-                      <Input
-                        type="text"
-                        placeholder="Enter 12-digit Aadhaar"
-                        value={aadhaar}
-                        onChange={handleAadhaarChange}
-                        maxLength={12}
-                        className={cn(
-                          "text-base pr-10 h-11",
-                          aadhaar.length === 12 && "!border-success"
-                        )}
-                      />
-                      {aadhaar.length === 12 && (
-                        <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
-                      PAN Number
-                    </label>
-                    <div className="relative">
-                      <Input
-                        type="text"
-                        placeholder="ABCDE1234F"
-                        value={pan}
-                        onChange={handlePanChange}
-                        maxLength={10}
-                        className={cn(
-                          "text-base uppercase pr-10 h-11",
-                          panError && "!border-destructive",
-                          pan.length === 10 && !panError && "!border-success"
-                        )}
-                      />
-                      {pan.length === 10 && !panError && (
-                        <Check className="absolute right-3 top-3 w-5 h-5 text-success animate-bounce-in" />
-                      )}
-                      {panError && (
-                        <AlertCircle className="absolute right-3 top-3 w-5 h-5 text-destructive" />
-                      )}
-                    </div>
-                    {panError && (
-                      <p className="text-xs text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {panError}
-                      </p>
-                    )}
-                    {!panError && pan.length > 0 && pan.length < 10 && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Format: 5 letters + 4 digits + 1 letter
-                      </p>
-                    )}
-                  </div>
-                </div>
-
                 <div className="aspect-video bg-muted rounded-xl flex items-center justify-center">
                   <Video className="w-14 h-14 text-purple" />
                 </div>
@@ -183,7 +91,7 @@ const VideoKYC = () => {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-purple">•</span>
-                      <span>Keep Aadhaar and PAN ready</span>
+                      <span>Keep your documents ready</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-purple">•</span>
@@ -230,7 +138,6 @@ const VideoKYC = () => {
             <Button 
               onClick={handleStart}
               className="w-full h-12 text-base font-semibold"
-              disabled={!isValid}
             >
               Start Video KYC
             </Button>
