@@ -159,7 +159,7 @@ const PersonalDetails = () => {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Are you an Abetted Person?</Label>
+              <Label className="text-sm font-medium">Are you a differently abled person?</Label>
               <div className="grid grid-cols-2 gap-3">
                 <div
                   className={cn(
