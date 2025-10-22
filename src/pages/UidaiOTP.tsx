@@ -70,7 +70,7 @@ const UidaiOTP = () => {
           <Shield className="w-7 h-7 text-purple" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-1">
-          UIDAI Mobile OTP ✉️
+          Verify ✉️
         </h2>
         <p className="text-sm text-muted-foreground">
           OTP sent from UIDAI to your registered number
